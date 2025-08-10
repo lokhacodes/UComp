@@ -1,6 +1,6 @@
-import CategoryFilter from '@/components/shared/CategoryFilter';
-import Collection from '@/components/shared/Collection'
-import Search from '@/components/shared/Search';
+import CategoryFilter from '@/components/Shared/CategoryFilter';
+import Collection from '@/components/Shared/Collection'
+import Search from '@/components/Shared/Search';
 import { Button } from '@/components/ui/button'
 import { getAllEvents } from '@/lib/actions/event.actions';
 import { SearchParamProps } from '@/types';
@@ -8,8 +8,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 export default async function Home({ searchParams }: SearchParamProps) {
-  const params = await searchParams;
-
   const page = Number(searchParams?.page) || 1;
   const searchText = (searchParams?.query as string) || '';
   const category = (searchParams?.category as string) || '';

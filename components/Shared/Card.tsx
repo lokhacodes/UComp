@@ -1,20 +1,21 @@
-import { Event } from '@/types'
+import { IEvent } from '@/lib/mongodb/database/models/event.model'
 import { formatDateTime } from '@/lib/utils'
+import { auth } from '@clerk/nextjs/server'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import { DeleteConfirmation } from './DeleteConfirmation'
+import { DeleteConfirmation } from '@/components/Shared/DeleteConfirmation'
+
 
 type CardProps = {
-  event: Event,
+  event: IEvent,
   hasOrderLink?: boolean,
   hidePrice?: boolean
 }
 
-const Card = ({ event, hasOrderLink, hidePrice }: CardProps) => {
-  // Note: In client components, use useAuth() hook instead
-  // For now, we'll use a simplified check since this is likely a client component
-  const userId = "user-id-placeholder"; // This should be replaced with actual user ID from context/props
+const Card = async ({ event, hasOrderLink, hidePrice }: CardProps) => {
+  const { sessionClaims } =await auth();
+  const userId = sessionClaims?.userId as string;
 
   const isEventCreator = userId === event.organizer._id.toString();
 
@@ -25,7 +26,8 @@ const Card = ({ event, hasOrderLink, hidePrice }: CardProps) => {
         style={{backgroundImage: `url(${event.imageUrl})`}}
         className="flex-center flex-grow bg-gray-50 bg-cover bg-center text-grey-500"
       />
-      
+      {/* IS EVENT CREATOR ... */}
+
       {isEventCreator && !hidePrice && (
         <div className="absolute right-2 top-2 flex flex-col gap-4 rounded-xl bg-white p-3 shadow-sm transition-all">
           <Link href={`/events/${event._id}/update`}>
@@ -36,7 +38,9 @@ const Card = ({ event, hasOrderLink, hidePrice }: CardProps) => {
         </div>
       )}
 
-      <div className="flex min-h-[230px] flex-col gap-3 p-5 md:gap-4">
+      <div
+        className="flex min-h-[230px] flex-col gap-3 p-5 md:gap-4"
+      > 
        {!hidePrice && <div className="flex gap-2">
           <span className="p-semibold-14 w-min rounded-full bg-green-100 px-4 py-1 text-green-60">
             {event.isFree ? 'FREE' : `$${event.price}`}
