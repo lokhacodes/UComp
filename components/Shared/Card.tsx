@@ -4,7 +4,7 @@ import { auth } from '@clerk/nextjs/server'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import { DeleteConfirmation } from '@/components/Shared/DeleteConfirmation'
+import { DeleteConfirmation } from '@/components/shared/DeleteConfirmation'
 
 
 type CardProps = {
