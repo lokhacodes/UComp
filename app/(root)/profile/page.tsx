@@ -10,6 +10,7 @@ import React from 'react'
 
 const ProfilePage = async ({ searchParams }: SearchParamProps) => {
   const { userId } = await auth();
+  const searchParamsData = await searchParams;
 
   // ✅ Prevent null userId from causing TS and runtime errors
   if (!userId) {
@@ -23,8 +24,8 @@ const ProfilePage = async ({ searchParams }: SearchParamProps) => {
     );
   }
 
-  const ordersPage = Number(searchParams?.ordersPage) || 1;
-  const eventsPage = Number(searchParams?.eventsPage) || 1;
+  const ordersPage = Number(searchParamsData?.ordersPage) || 1;
+  const eventsPage = Number(searchParamsData?.eventsPage) || 1;
 
   const orders = await getOrdersByUser({ userId, page: ordersPage });
   const orderedEvents = orders?.data.map((order: IOrder) => order.event) || [];

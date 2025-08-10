@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
 import { ClerkProvider } from '@clerk/nextjs'
-import './globals.css'
 
+import './globals.css'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -11,8 +11,8 @@ const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
-  title: 'UComp',
-  description: 'UComp is a platform for event management.',
+  title: 'Evently',
+  description: 'Evently is a platform for event management.',
   icons: {
     icon: '/assets/images/logo.svg'
   }
@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-         <body className={poppins.variable}>{children}</body>
+        <body className={poppins.variable}>{children}</body>
       </html>
     </ClerkProvider>
   )

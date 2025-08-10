@@ -5,13 +5,18 @@ import { formatDateTime } from '@/lib/utils';
 import { SearchParamProps } from '@/types'
 import Image from 'next/image';
 
-const EventDetails = async ({ params: { id }, searchParams }: SearchParamProps) => {
+
+const EventDetails = async (props: SearchParamProps) => {
+  const { params, searchParams } = props;
+  const { id } = await params;
+  const searchParamsData = await searchParams;
+
   const event = await getEventById(id);
 
   const relatedEvents = await getRelatedEventsByCategory({
     categoryId: event.category._id,
     eventId: event._id,
-    page: searchParams.page as string,
+    page: searchParamsData.page as string,
   })
 
   return (
@@ -89,9 +94,10 @@ const EventDetails = async ({ params: { id }, searchParams }: SearchParamProps) 
           emptyStateSubtext="Come back later"
           collectionType="All_Events"
           limit={3}
-          page={searchParams.page as string}
+          page={searchParamsData.page as string}
           totalPages={relatedEvents?.totalPages}
         />
+        
     </section>
     </>
   )
