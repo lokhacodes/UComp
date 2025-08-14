@@ -8,8 +8,8 @@ import Image from 'next/image';
 
 const EventDetails = async (props: SearchParamProps) => {
   const { params, searchParams } = props;
-  const { id } = await params;
-  const searchParamsData = await searchParams;
+  const { id } =  params;
+  const searchParamsData =  searchParams;
 
   const event = await getEventById(id);
 

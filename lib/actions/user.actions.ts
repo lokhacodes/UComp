@@ -2,16 +2,15 @@
 
 import { revalidatePath } from 'next/cache'
 
-//import { connectToDatabase } from '@/lib/database'
-//import User from '@/lib/database/models/user.model'
+
 
 import { handleError } from '@/lib/utils'
 
 import { CreateUserParams, UpdateUserParams } from '@/types'
 import { connectToDatabase } from '../mongodb/database'
 import User from '../mongodb/database/models/user.model'
-import Order from '../mongodb/database/models/user.model'
-import Event from '../mongodb/database/models/user.model'
+import Order from '../mongodb/database/models/order.model'
+import Event from '../mongodb/database/models/event.model'
 
 
 export async function createUser(user: CreateUserParams) {
