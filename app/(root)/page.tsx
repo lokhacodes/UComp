@@ -8,10 +8,10 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 export default async function Home({ searchParams }: SearchParamProps) {
-  const searchParamsData = await searchParams;
-  const page = Number(searchParamsData?.page) || 1;
-  const searchText = (searchParamsData?.query as string) || '';
-  const category = (searchParamsData?.category as string) || '';
+  const resolvedParams = await searchParams;
+  const page = Number(resolvedParams?.page) || 1;
+  const searchText = (resolvedParams?.query as string) || '';
+  const category = (resolvedParams?.category as string) || '';
 
   const events = await getAllEvents({
     query: searchText,
@@ -20,6 +20,7 @@ export default async function Home({ searchParams }: SearchParamProps) {
     limit: 6
   })
 
+  
   return (
     <>
       <section className="bg-primary-50 bg-dotted-pattern bg-contain py-5 md:py-10">

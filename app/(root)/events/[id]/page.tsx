@@ -7,9 +7,11 @@ import Image from 'next/image';
 
 
 const EventDetails = async (props: SearchParamProps) => {
-  const { params, searchParams } = props;
-  const { id } =  params;
-  const searchParamsData =  searchParams;
+  const { params, searchParams } = await props;
+  
+  
+  const { id } =  await params;
+  const searchParamsData =  await searchParams;
 
   const event = await getEventById(id);
 
@@ -97,7 +99,6 @@ const EventDetails = async (props: SearchParamProps) => {
           page={searchParamsData.page as string}
           totalPages={relatedEvents?.totalPages}
         />
-        
     </section>
     </>
   )
