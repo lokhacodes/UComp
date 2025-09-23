@@ -8,20 +8,19 @@ import { Input } from "@/components/ui/input"
 import { eventFormSchema } from "@/lib/validator"
 import * as z from 'zod'
 import { eventDefaultValues } from "@/constants"
-//import Dropdown from "./Dropdown"
+import Dropdown from "./Dropdown"
 import { Textarea } from "@/components/ui/textarea"
-//import { FileUploader } from "./FileUploader"
+import { FileUploader } from "./FileUploader"
 import { useState } from "react"
 import Image from "next/image"
 import DatePicker from "react-datepicker";
 import { useUploadThing } from '@/lib/uploadthing'
+
 import "react-datepicker/dist/react-datepicker.css";
 import { Checkbox } from "../ui/checkbox"
 import { useRouter } from "next/navigation"
 import { createEvent, updateEvent } from "@/lib/actions/event.actions"
 import { IEvent } from "@/lib/mongodb/database/models/event.model"
-import { FileUploader } from "./FileUploader"
-import Dropdown from "./Dropdown"
 
 
 type EventFormProps = {
@@ -151,7 +150,7 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormControl className="h-72">
-                    <FileUploader
+                    <FileUploader 
                       onFieldChange={field.onChange}
                       imageUrl={field.value}
                       setFiles={setFiles}
