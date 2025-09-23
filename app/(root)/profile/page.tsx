@@ -9,27 +9,17 @@ import Link from 'next/link'
 import React from 'react'
 
 const ProfilePage = async ({ searchParams }: SearchParamProps) => {
-  const { userId } = await auth();
-  const searchParamsData = await searchParams;
+  const { sessionClaims } = await auth();
+  const userId = sessionClaims?.userId as string;
 
-  // ✅ Prevent null userId from causing TS and runtime errors
-  if (!userId) {
-    return (
-      <section className="wrapper py-10 text-center">
-        <h2 className="h3-bold">Please log in to view your profile.</h2>
-        <Button asChild size="lg" className="mt-4">
-          <Link href="/sign-in">Sign In</Link>
-        </Button>
-      </section>
-    );
-  }
+  const awaitedSearchParams = await searchParams;
+  const ordersPage = Number(awaitedSearchParams?.ordersPage) || 1;
+  const eventsPage = Number(awaitedSearchParams?.eventsPage) || 1;
 
-  const ordersPage = Number(searchParamsData?.ordersPage) || 1;
-  const eventsPage = Number(searchParamsData?.eventsPage) || 1;
+  const orders = await getOrdersByUser({ userId, page: ordersPage})
 
-  const orders = await getOrdersByUser({ userId, page: ordersPage });
   const orderedEvents = orders?.data.map((order: IOrder) => order.event) || [];
-  const organizedEvents = await getEventsByUser({ userId, page: eventsPage });
+  const organizedEvents = await getEventsByUser({ userId, page: eventsPage })
 
   return (
     <>
@@ -38,7 +28,9 @@ const ProfilePage = async ({ searchParams }: SearchParamProps) => {
         <div className="wrapper flex items-center justify-center sm:justify-between">
           <h3 className='h3-bold text-center sm:text-left'>My Tickets</h3>
           <Button asChild size="lg" className="button hidden sm:flex">
-            <Link href="/#events">Explore More Events</Link>
+            <Link href="/#events">
+              Explore More Events
+            </Link>
           </Button>
         </div>
       </section>
@@ -61,7 +53,9 @@ const ProfilePage = async ({ searchParams }: SearchParamProps) => {
         <div className="wrapper flex items-center justify-center sm:justify-between">
           <h3 className='h3-bold text-center sm:text-left'>Events Organized</h3>
           <Button asChild size="lg" className="button hidden sm:flex">
-            <Link href="/events/create">Create New Event</Link>
+            <Link href="/events/create">
+              Create New Event
+            </Link>
           </Button>
         </div>
       </section>
@@ -79,7 +73,7 @@ const ProfilePage = async ({ searchParams }: SearchParamProps) => {
         />
       </section>
     </>
-  );
+  )
 }
 
-export default ProfilePage;
+export default ProfilePage
