@@ -6,8 +6,24 @@ import { getAllEvents } from '@/lib/actions/event.actions';
 import { SearchParamProps } from '@/types';
 import Image from 'next/image'
 import Link from 'next/link'
+import { auth } from '@clerk/nextjs/server'
+import { redirect } from 'next/navigation'
+import { getUserByClerkId } from '@/lib/actions/user.actions'
 
 export default async function Home({ searchParams }: SearchParamProps) {
+  const { userId } = await auth()
+
+  if (!userId) {
+    redirect('/sign-in')
+  }
+
+  const userFromDB = await getUserByClerkId(userId)
+
+  if (!userFromDB) {
+    redirect('/role-selection')
+  } else if (!userFromDB.email.endsWith('@ndub.edu.bd')) {
+    redirect('/blank')
+  }
   const resolvedParams = await searchParams;
   const page = Number(resolvedParams?.page) || 1;
   const searchText = (resolvedParams?.query as string) || '';

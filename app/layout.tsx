@@ -24,7 +24,10 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      afterSignInUrl="/role-selection"
+      afterSignUpUrl="/role-selection"
+    >
       <html lang="en">
         <body className={poppins.variable}>{children}</body>
       </html>

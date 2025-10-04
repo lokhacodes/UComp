@@ -13,7 +13,11 @@ export async function createUser(user: CreateUserParams) {
   try {
     await connectToDatabase()
 
-    const newUser = await User.create(user)
+    const newUser = await User.findOneAndUpdate(
+      { clerkId: user.clerkId },
+      user,
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    )
     return JSON.parse(JSON.stringify(newUser))
   } catch (error) {
     handleError(error)
@@ -41,6 +45,19 @@ export async function updateUser(clerkId: string, user: UpdateUserParams) {
 
     if (!updatedUser) throw new Error('User update failed')
     return JSON.parse(JSON.stringify(updatedUser))
+  } catch (error) {
+    handleError(error)
+  }
+}
+
+export async function getUserByClerkId(clerkId: string) {
+  try {
+    await connectToDatabase()
+
+    const user = await User.findOne({ clerkId })
+
+    if (!user) return null
+    return JSON.parse(JSON.stringify(user))
   } catch (error) {
     handleError(error)
   }
