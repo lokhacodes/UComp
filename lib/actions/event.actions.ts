@@ -51,7 +51,7 @@ export async function getEventById(eventId: string) {
   try {
     await connectToDatabase()
 
-    const event = await populateEvent(Event.findById(eventId))
+    const event = await populateEvent(Event.findById(eventId).populate('organizer'))
 
     if (!event) throw new Error('Event not found')
 
@@ -66,7 +66,7 @@ export async function updateEvent({ userId, event, path }: UpdateEventParams) {
   try {
     await connectToDatabase()
 
-    const eventToUpdate = await Event.findById(event._id)
+    const eventToUpdate = await Event.findById(event._id).populate('organizer')
     if (!eventToUpdate || eventToUpdate.organizer.toHexString() !== userId) {
       throw new Error('Unauthorized or event not found')
     }
@@ -89,7 +89,7 @@ export async function deleteEvent({ eventId, path }: DeleteEventParams) {
   try {
     await connectToDatabase()
 
-    const deletedEvent = await Event.findByIdAndDelete(eventId)
+    const deletedEvent = await Event.findByIdAndDelete(eventId).populate('organizer')
     if (deletedEvent) revalidatePath(path)
   } catch (error) {
     handleError(error)
