@@ -13,16 +13,14 @@ import { getUserByClerkId } from '@/lib/actions/user.actions'
 export default async function Home({ searchParams }: SearchParamProps) {
   const { userId } = await auth()
 
-  if (!userId) {
-    redirect('/sign-in')
-  }
+  if (userId) {
+    const userFromDB = await getUserByClerkId(userId)
 
-  const userFromDB = await getUserByClerkId(userId)
-
-  if (!userFromDB) {
-    redirect('/role-selection')
-  } else if (!userFromDB.email.endsWith('@ndub.edu.bd')) {
-    redirect('/blank')
+    if (userFromDB && userFromDB.role === 'admin') {
+      // Show admin page
+    } else {
+      redirect('/role-selection')
+    }
   }
   const resolvedParams = await searchParams;
   const page = Number(resolvedParams?.page) || 1;

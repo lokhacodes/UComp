@@ -13,12 +13,35 @@ export async function createUser(user: CreateUserParams) {
   try {
     await connectToDatabase()
 
-    const newUser = await User.findOneAndUpdate(
-      { clerkId: user.clerkId },
-      user,
-      { upsert: true, new: true, setDefaultsOnInsert: true }
-    )
-    return JSON.parse(JSON.stringify(newUser))
+    // Check if user exists by clerkId
+    const existingUser = await User.findOne({ clerkId: user.clerkId })
+    if (existingUser) {
+      // Update the existing user
+      const updatedUser = await User.findOneAndUpdate(
+        { clerkId: user.clerkId },
+        user,
+        { new: true }
+      )
+      return JSON.parse(JSON.stringify(updatedUser))
+    } else {
+      // Create new user
+      try {
+        const newUser = await User.create(user)
+        return JSON.parse(JSON.stringify(newUser))
+      } catch (error: any) {
+        if (error.code === 11000) {
+          // Duplicate key error, user already exists with same email, update instead
+          const updatedUser = await User.findOneAndUpdate(
+            { email: user.email },
+            user,
+            { new: true }
+          )
+          return JSON.parse(JSON.stringify(updatedUser))
+        } else {
+          throw error
+        }
+      }
+    }
   } catch (error) {
     handleError(error)
   }

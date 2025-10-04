@@ -24,12 +24,8 @@ export default function RoleSelectionPage() {
       if (user?.id) {
         const data = await getUserByClerkId(user.id)
         setUserData(data)
-        if (data?.role) {
-          if (data.role === 'admin') {
-            router.replace('/')
-          } else {
-            router.replace('/blank')
-          }
+        if (data?.role === 'admin') {
+          router.replace('/')
         }
       }
     }
@@ -47,6 +43,7 @@ export default function RoleSelectionPage() {
 
     setLoading(true)
     try {
+      const roleValue: 'admin' | null = role === 'admin' ? 'admin' : null
       // Check if user exists in DB
       let existingUser = await getUserByClerkId(user.id)
       if (!existingUser) {
@@ -58,20 +55,20 @@ export default function RoleSelectionPage() {
           firstName: user.firstName || '',
           lastName: user.lastName || '',
           photo: user.imageUrl || '',
-          role
+          role: roleValue
         }
         try {
           await createUser(userData)
         } catch (error: any) {
           if (error.code === 11000) {
             // Duplicate key error, user already exists, update instead
-            await updateUser(user.id, { role })
+            await updateUser(user.id, { role: role === 'admin' ? 'admin' : null })
           } else {
             throw error
           }
         }
       } else {
-        await updateUser(user.id, { role })
+        await updateUser(user.id, { role: role === 'admin' ? 'admin' : null })
       }
       if (role === 'admin') {
         router.replace('/')
