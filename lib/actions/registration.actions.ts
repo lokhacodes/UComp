@@ -47,3 +47,17 @@ export async function getAllRegistrations() {
     handleError(error)
   }
 }
+
+export async function getRegistrationsByUser(userId: string) {
+  try {
+    await connectToDatabase()
+
+    const registrations = await Registration.find({ user: userId })
+      .populate('user', '_id firstName lastName email')
+      .populate('event', '_id title')
+
+    return JSON.parse(JSON.stringify(registrations))
+  } catch (error) {
+    handleError(error)
+  }
+}

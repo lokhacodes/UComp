@@ -32,12 +32,24 @@ export default function RegisterForm() {
 
     setLoading(true)
     try {
-      await createRegistration({
-        userId: user.id,
-        eventId,
-        additionalInfo: formData,
+      // First get the user from DB using Clerk ID
+      const response = await fetch('/api/user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ clerkId: user.id }),
       })
-      router.push('/blank') // or success page
+      const userData = await response.json()
+
+      if (userData._id) {
+        await createRegistration({
+          userId: userData._id,
+          eventId,
+          additionalInfo: formData,
+        })
+        router.push('/my-registrations')
+      }
     } catch (error) {
       console.error(error)
     } finally {
