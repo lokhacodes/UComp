@@ -29,7 +29,7 @@ const EventDetails = async (props: SearchParamProps) => {
       <header className="bg-white shadow">
         <div className="wrapper flex justify-between items-center py-4">
           <Link href="/" className="text-xl font-bold">UComp</Link>
-          <Link href="/my-registrations" className="font-bold text-primary-500 hover:text-primary-700 hover:ring-2 hover:ring-primary-500 hover:ring-opacity-50 transition-all duration-200">My Registrations</Link>
+          <Link href="/blank/my-registrations" className="font-bold text-primary-500 hover:text-primary-700 hover:ring-2 hover:ring-primary-500 hover:ring-opacity-50 transition-all duration-200">My Registrations</Link>
           <Button asChild>
             <Link href="/sign-out">Logout</Link>
           </Button>

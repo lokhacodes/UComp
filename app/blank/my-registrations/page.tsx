@@ -35,9 +35,9 @@ export default async function MyRegistrationsPage() {
         {registrations?.length === 0 ? (
           <p className="text-indigo-600">You have not registered for any events yet.</p>
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-6 flex flex-wrap justify-center gap-6">
             {registrations?.map((reg: any) => (
-              <div key={reg._id} className="bg-white shadow-md rounded-xl p-6 border border-indigo-200 hover:shadow-lg transition-all duration-300">
+              <div key={reg._id} className="bg-white shadow-md rounded-xl p-4 border border-indigo-200 hover:shadow-lg transition-all duration-300 max-w-[400px] w-full sm:w-[48%] md:w-[32%]">
                 {/* Event Image */}
                 {reg.event.imageUrl && (
                   <div className="mb-4">
