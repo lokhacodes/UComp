@@ -48,7 +48,7 @@ export default function RegisterForm() {
           eventId,
           additionalInfo: formData,
         })
-        router.push('/my-registrations')
+        router.push('/blank/my-registrations')
       }
     } catch (error) {
       console.error(error)

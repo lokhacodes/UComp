@@ -68,7 +68,7 @@ export async function getRegistrationsByUser(userId: string) {
 
     const registrations = await Registration.find({ user: userId })
       .populate('user', '_id firstName lastName email')
-      .populate('event', '_id title')
+      .populate('event', '_id title description location startDateTime endDateTime price isFree imageUrl')
 
     return JSON.parse(JSON.stringify(registrations))
   } catch (error) {
