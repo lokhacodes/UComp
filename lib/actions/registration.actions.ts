@@ -1,5 +1,6 @@
 'use server'
 
+import mongoose from 'mongoose'
 import { connectToDatabase } from '@/lib/mongodb/database'
 import Registration from '@/lib/mongodb/database/models/registration.model'
 import { handleError } from '@/lib/utils'
@@ -9,8 +10,8 @@ export async function createRegistration({ userId, eventId, additionalInfo }: { 
     await connectToDatabase()
 
     const newRegistration = await Registration.create({
-      user: userId,
-      event: eventId,
+      user: new mongoose.Types.ObjectId(userId),
+      event: new mongoose.Types.ObjectId(eventId),
       additionalInfo,
     })
 
