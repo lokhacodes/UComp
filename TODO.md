@@ -1,0 +1,5 @@
+- [x] Create registration model lib/mongodb/database/models/registration.model.ts
+- [x] Create registration actions lib/actions/registration.actions.ts
+- [x] Create register page app/blank/register/page.tsx
+- [x] Add Register button in components/shared/CardU.tsx
+- [x] Create orders page app/(root)/orders/page.tsx for admin to view registrations
