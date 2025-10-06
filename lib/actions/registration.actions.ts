@@ -35,15 +35,28 @@ export async function getRegistrationsByEvent(eventId: string) {
   }
 }
 
-export async function getAllRegistrations() {
+export async function getAllRegistrations(page = 1, limit = 10) {
   try {
     await connectToDatabase()
 
+    const skip = (page - 1) * limit
+
     const registrations = await Registration.find()
       .populate('user', '_id firstName lastName email')
-      .populate('event', '_id title')
+      .populate('event', '_id title imageUrl')
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 })
 
-    return JSON.parse(JSON.stringify(registrations))
+    const total = await Registration.countDocuments()
+
+    return JSON.parse(JSON.stringify({
+      registrations,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit)
+    }))
   } catch (error) {
     handleError(error)
   }

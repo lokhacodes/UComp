@@ -60,69 +60,73 @@ export default function RegisterForm() {
   if (!eventId) return <div>Invalid event</div>
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-purple-50 to-pink-100">
       {/* ================= HEADER ================= */}
-      <header className="bg-white shadow">
+      <header className="bg-white shadow-lg rounded-b-lg">
         <div className="wrapper flex justify-between items-center py-4">
-          <a href="/" className="text-xl font-bold">UComp</a>
-          <Button asChild>
+          <a href="/" className="text-xl font-bold text-purple-600">UComp</a>
+          <Button asChild className="bg-purple-600 hover:bg-purple-700 text-white rounded-full px-6 py-2">
             <a href="/sign-out">Logout</a>
           </Button>
         </div>
       </header>
 
       {/* ================= MAIN CONTENT ================= */}
-      <main className="flex-grow container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4">Register for Event</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
+      <main className="flex-grow container mx-auto p-6">
+        <h1 className="text-3xl font-bold mb-6 text-purple-800 text-center">Register for Event</h1>
+        <form onSubmit={handleSubmit} className="bg-white shadow-lg rounded-xl p-8 max-w-md mx-auto space-y-6 border border-purple-200">
           <div>
-            <Label htmlFor="id">ID</Label>
+            <Label htmlFor="id" className="text-purple-700 font-semibold">ID</Label>
             <Input
               id="id"
               name="id"
               value={formData.id}
               onChange={handleChange}
               required
+              className="mt-1 rounded-lg border-purple-300 focus:border-purple-500 focus:ring-purple-500"
             />
           </div>
           <div>
-            <Label htmlFor="university">University</Label>
+            <Label htmlFor="university" className="text-purple-700 font-semibold">University</Label>
             <Input
               id="university"
               name="university"
               value={formData.university}
               onChange={handleChange}
               required
+              className="mt-1 rounded-lg border-purple-300 focus:border-purple-500 focus:ring-purple-500"
             />
           </div>
           <div>
-            <Label htmlFor="department">Department</Label>
+            <Label htmlFor="department" className="text-purple-700 font-semibold">Department</Label>
             <Input
               id="department"
               name="department"
               value={formData.department}
               onChange={handleChange}
               required
+              className="mt-1 rounded-lg border-purple-300 focus:border-purple-500 focus:ring-purple-500"
             />
           </div>
           <div>
-            <Label htmlFor="year">Year</Label>
+            <Label htmlFor="year" className="text-purple-700 font-semibold">Year</Label>
             <Input
               id="year"
               name="year"
               value={formData.year}
               onChange={handleChange}
               required
+              className="mt-1 rounded-lg border-purple-300 focus:border-purple-500 focus:ring-purple-500"
             />
           </div>
-          <Button type="submit" disabled={loading}>
+          <Button type="submit" disabled={loading} className="w-full bg-purple-600 hover:bg-purple-700 text-white rounded-lg py-3 font-semibold transition-colors">
             {loading ? 'Registering...' : 'Register'}
           </Button>
         </form>
       </main>
 
       {/* ================= FOOTER ================= */}
-      <footer className="bg-white shadow py-4 text-center text-sm text-gray-500">
+      <footer className="bg-white shadow-lg rounded-t-lg py-4 text-center text-sm text-gray-500">
         &copy; {new Date().getFullYear()} UComp. All rights reserved.
       </footer>
     </div>
