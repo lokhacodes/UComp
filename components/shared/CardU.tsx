@@ -18,6 +18,9 @@ const Card = async ({ event, hasOrderLink, hidePrice }: CardProps) => {
 
   const isEventCreator = userId === event?.organizer?._id.toString();
 
+  // Check if the event has ended
+  const hasEventFinished = new Date(event.endDateTime) < new Date();
+
   return (
     <div className="group relative flex min-h-[380px] w-full max-w-[400px] flex-col overflow-hidden rounded-xl bg-white shadow-md transition-all hover:shadow-lg md:min-h-[438px]">
       {/* Image Link */}
@@ -72,13 +75,19 @@ const Card = async ({ event, hasOrderLink, hidePrice }: CardProps) => {
           )}
         </div>
 
-        {/* Register Button */}
+        {/* Register Button or Closed Message */}
         <div className="mt-4">
-          <Link href={`/blank/register?eventId=${event._id}`}>
-            <button className="w-full rounded bg-primary-500 px-4 py-2 text-white hover:bg-primary-600">
-              Register
-            </button>
-          </Link>
+          {hasEventFinished ? (
+            <div className="w-full rounded bg-red-100 px-4 py-2 text-red-600 text-center font-semibold">
+              Registration Closed
+            </div>
+          ) : (
+            <Link href={`/blank/register?eventId=${event._id}`}>
+              <button className="w-full rounded bg-primary-500 px-4 py-2 text-white hover:bg-primary-600">
+                Register
+              </button>
+            </Link>
+          )}
         </div>
       </div>
     </div>
