@@ -6,7 +6,10 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { createRegistration } from '@/lib/actions/registration.actions'
-import { useUser } from '@clerk/nextjs'
+import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs'
+//import { Link } from 'lucide-react'
+import Link from 'next/link'
+import Image from 'next/image'
 
 export default function RegisterForm() {
   const router = useRouter()
@@ -64,10 +67,26 @@ export default function RegisterForm() {
       {/* ================= HEADER ================= */}
       <header className="bg-white shadow-lg rounded-b-lg">
         <div className="wrapper flex justify-between items-center py-4">
-          <a href="/" className="text-xl font-bold text-purple-600">UComp</a>
-          <Button asChild className="bg-purple-600 hover:bg-purple-700 text-white rounded-full px-6 py-2">
-            <a href="/sign-out">Logout</a>
-          </Button>
+          <Link href="/" className="w-36">
+          <Image 
+            src="/assets/images/logo.svg" width={100} height={25}
+            alt="UComp logo" 
+          />
+        </Link>
+          <div className="flex w-32 justify-end gap-3">
+            <SignedIn>
+              <UserButton />
+
+            </SignedIn>
+            <SignedOut>
+              <Button asChild className="rounded-full" size="lg">
+                <Link href="/sign-in">
+                  Login
+                </Link>
+              </Button>
+            </SignedOut>
+
+          </div>
         </div>
       </header>
 

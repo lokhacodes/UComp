@@ -6,6 +6,7 @@ import { SearchParamProps } from '@/types'
 import Image from 'next/image';
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 
 
 const EventDetails = async (props: SearchParamProps) => {
@@ -28,11 +29,27 @@ const EventDetails = async (props: SearchParamProps) => {
       {/* ================= HEADER ================= */}
       <header className="bg-white shadow">
         <div className="wrapper flex justify-between items-center py-4">
-          <Link href="/" className="text-xl font-bold">UComp</Link>
+          <Link href="/" className="w-36">
+          <Image 
+            src="/assets/images/logo.svg" width={100} height={25}
+            alt="UComp logo" 
+          />
+        </Link>
           <Link href="/blank/my-registrations" className="font-bold text-primary-500 hover:text-primary-700 hover:ring-2 hover:ring-primary-500 hover:ring-opacity-50 transition-all duration-200">My Registrations</Link>
-          <Button asChild>
-            <Link href="/sign-out">Logout</Link>
-          </Button>
+          <div className="flex w-32 justify-end gap-3">
+                      <SignedIn>
+                        <UserButton />
+          
+                      </SignedIn>
+                      <SignedOut>
+                        <Button asChild className="rounded-full" size="lg">
+                          <Link href="/sign-in">
+                            Login
+                          </Link>
+                        </Button>
+                      </SignedOut>
+          
+                    </div>
         </div>
       </header>
 

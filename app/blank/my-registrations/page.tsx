@@ -1,8 +1,11 @@
 import { auth } from '@clerk/nextjs/server'
+import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 import { redirect } from 'next/navigation'
 import { getUserByClerkId } from '@/lib/actions/user.actions'
 import { getRegistrationsByUser } from '@/lib/actions/registration.actions'
 import Image from 'next/image'
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
 export default async function MyRegistrationsPage() {
   const { userId } = await auth()
@@ -24,8 +27,26 @@ export default async function MyRegistrationsPage() {
       {/* ================= HEADER ================= */}
       <header className="bg-white shadow-lg rounded-b-lg">
         <div className="wrapper flex justify-between items-center py-4">
-          <a href="/" className="text-xl font-bold text-indigo-600">UComp</a>
-          <a href="/sign-out" className="text-primary-500 hover:text-primary-700 transition-colors">Logout</a>
+          <Link href="/" className="w-36">
+          <Image 
+            src="/assets/images/logo.svg" width={100} height={25}
+            alt="UComp logo" 
+          />
+        </Link>
+          <div className="flex w-32 justify-end gap-3">
+            <SignedIn>
+              <UserButton />
+
+            </SignedIn>
+            <SignedOut>
+              <Button asChild className="rounded-full" size="lg">
+                <Link href="/sign-in">
+                  Login
+                </Link>
+              </Button>
+            </SignedOut>
+
+          </div>
         </div>
       </header>
 
