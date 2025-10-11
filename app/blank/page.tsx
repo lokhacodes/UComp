@@ -78,7 +78,7 @@ export default async function BlankPage({ searchParams }: SearchParamProps) {
           <div className="wrapper grid grid-cols-1 gap-5 md:grid-cols-2 2xl:gap-0">
             <div className="flex flex-col justify-center gap-8">
               <h1 className="h1-bold">
-                Explore and Join Competitions Worldwide
+                Connect, Compete, Grow: Unlock opportunities beyond the classroom!
               </h1>
               <p className="p-regular-20 md:p-regular-24">
                 Discover events that match your skills and interests — just for you.

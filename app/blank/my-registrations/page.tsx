@@ -28,24 +28,20 @@ export default async function MyRegistrationsPage() {
       <header className="bg-white shadow-lg rounded-b-lg">
         <div className="wrapper flex justify-between items-center py-4">
           <Link href="/" className="w-36">
-          <Image 
-            src="/assets/images/logo.svg" width={100} height={25}
-            alt="UComp logo" 
-          />
-        </Link>
+            <Image 
+              src="/assets/images/logo.svg" width={100} height={25}
+              alt="UComp logo" 
+            />
+          </Link>
           <div className="flex w-32 justify-end gap-3">
             <SignedIn>
               <UserButton />
-
             </SignedIn>
             <SignedOut>
               <Button asChild className="rounded-full" size="lg">
-                <Link href="/sign-in">
-                  Login
-                </Link>
+                <Link href="/sign-in">Login</Link>
               </Button>
             </SignedOut>
-
           </div>
         </div>
       </header>
@@ -53,42 +49,49 @@ export default async function MyRegistrationsPage() {
       {/* ================= MAIN CONTENT ================= */}
       <main className="flex-grow container mx-auto p-6">
         <h1 className="text-3xl font-bold mb-6 text-indigo-800">My Registered Events</h1>
+
         {registrations?.length === 0 ? (
           <p className="text-indigo-600">You have not registered for any events yet.</p>
         ) : (
-          <div className="space-y-6 flex flex-wrap justify-center gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {registrations?.map((reg: any) => (
-              <div key={reg._id} className="bg-white shadow-md rounded-xl p-4 border border-indigo-200 hover:shadow-lg transition-all duration-300 max-w-[400px] w-full sm:w-[48%] md:w-[32%]">
+              <div
+                key={reg._id}
+                className="bg-white shadow-md rounded-xl p-4 border border-indigo-200 hover:shadow-lg transition-all duration-300
+                           flex flex-col h-full"
+              >
                 {/* Event Image */}
                 {reg.event.imageUrl && (
-                  <div className="mb-4">
+                  <div className="mb-4 h-48 relative">
                     <Image
                       src={reg.event.imageUrl}
                       alt={reg.event.title}
-                      width={400}
-                      height={200}
-                      className="w-full h-48 object-cover rounded-lg"
+                      fill
+                      className="w-full h-full object-cover rounded-lg"
                     />
                   </div>
                 )}
 
-                <h2 className="text-xl font-semibold text-indigo-900 mb-2">{reg.event.title}</h2>
-                {reg.event.description && (
-                  <p className="text-indigo-700 mb-2">{reg.event.description}</p>
-                )}
-                {reg.event.location && (
-                  <p className="text-indigo-700 mb-2"><strong>Location:</strong> {reg.event.location}</p>
-                )}
-                <p className="text-indigo-700 mb-2">
-                  <strong>Start:</strong> {new Date(reg.event.startDateTime).toLocaleString()}
-                </p>
-                <p className="text-indigo-700 mb-2">
-                  <strong>End:</strong> {new Date(reg.event.endDateTime).toLocaleString()}
-                </p>
-                <p className="text-indigo-700 mb-2">
-                  <strong>Price:</strong> {reg.event.isFree ? 'Free' : `$${reg.event.price}`}
-                </p>
-                <p className="text-indigo-600 text-sm">
+                <div className="flex-1 flex flex-col">
+                  <h2 className="text-xl font-semibold text-indigo-900 mb-2">{reg.event.title}</h2>
+                  {reg.event.description && (
+                    <p className="text-indigo-700 mb-2 line-clamp-3">{reg.event.description}</p>
+                  )}
+                  {reg.event.location && (
+                    <p className="text-indigo-700 mb-2"><strong>Location:</strong> {reg.event.location}</p>
+                  )}
+                  <p className="text-indigo-700 mb-2">
+                    <strong>Start:</strong> {new Date(reg.event.startDateTime).toLocaleString()}
+                  </p>
+                  <p className="text-indigo-700 mb-2">
+                    <strong>End:</strong> {new Date(reg.event.endDateTime).toLocaleString()}
+                  </p>
+                  <p className="text-indigo-700 mb-2">
+                    <strong>Price:</strong> {reg.event.isFree ? 'Free' : `$${reg.event.price}`}
+                  </p>
+                </div>
+
+                <p className="text-indigo-600 text-sm mt-4">
                   <strong>Registered At:</strong> {new Date(reg.createdAt).toLocaleString()}
                 </p>
               </div>
