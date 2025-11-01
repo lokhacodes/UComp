@@ -5,16 +5,18 @@ import { checkoutOrder } from '@/lib/actions/order.actions';
 
 const Checkout = ({ event, userId }: { event: IEvent, userId: string }) => {
   const onCheckout = async () => {
+    "use server";
+
     const order = {
       eventTitle: event.title,
       eventId: event._id,
       price: event.price,
       isFree: event.isFree,
       buyerId: userId
-    }
+    };
 
     await checkoutOrder(order);
-  }
+  };
 
   return (
     <form action={onCheckout} method="post">

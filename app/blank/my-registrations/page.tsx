@@ -21,7 +21,7 @@ export default async function MyRegistrationsPage() {
   }
 
   const registrations = await getRegistrationsByUser(userFromDB._id)
-
+  
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-indigo-100">
       {/* ================= HEADER ================= */}
@@ -89,6 +89,15 @@ export default async function MyRegistrationsPage() {
                   <p className="text-indigo-700 mb-2">
                     <strong>Price:</strong> {reg.event.isFree ? 'Free' : `$${reg.event.price}`}
                   </p>
+                  {!reg.event.isFree && (
+                    <div className="mt-4">
+                      <Button asChild className="w-full bg-indigo-600 hover:bg-indigo-700 text-white">
+                        <Link href={`/blank/pay?eventId=${reg.event._id}`}>
+                          Pay Now
+                        </Link>
+                      </Button>
+                    </div>
+                  )}
                 </div>
 
                 <p className="text-indigo-600 text-sm mt-4">

@@ -23,6 +23,7 @@ export default function RegisterForm() {
     department: '',
     year: '',
   })
+
   const [loading, setLoading] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,7 +33,6 @@ export default function RegisterForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!user || !eventId) return
-
     setLoading(true)
     try {
       // First get the user from DB using Clerk ID
@@ -43,6 +43,7 @@ export default function RegisterForm() {
         },
         body: JSON.stringify({ clerkId: user.id }),
       })
+
       const userData = await response.json()
 
       if (userData._id) {
@@ -68,24 +69,17 @@ export default function RegisterForm() {
       <header className="bg-white shadow-lg rounded-b-lg">
         <div className="wrapper flex justify-between items-center py-4">
           <Link href="/" className="w-36">
-          <Image 
-            src="/assets/images/logo.svg" width={100} height={25}
-            alt="UComp logo" 
-          />
-        </Link>
+            <Image src="/assets/images/logo.svg" width={100} height={25} alt="UComp logo" />
+          </Link>
           <div className="flex w-32 justify-end gap-3">
             <SignedIn>
               <UserButton />
-
             </SignedIn>
             <SignedOut>
               <Button asChild className="rounded-full" size="lg">
-                <Link href="/sign-in">
-                  Login
-                </Link>
+                <Link href="/sign-in"> Login </Link>
               </Button>
             </SignedOut>
-
           </div>
         </div>
       </header>
@@ -93,9 +87,14 @@ export default function RegisterForm() {
       {/* ================= MAIN CONTENT ================= */}
       <main className="flex-grow container mx-auto p-6">
         <h1 className="text-3xl font-bold mb-6 text-purple-800 text-center">Register for Event</h1>
-        <form onSubmit={handleSubmit} className="bg-white shadow-lg rounded-xl p-8 max-w-md mx-auto space-y-6 border border-purple-200">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white shadow-lg rounded-xl p-8 max-w-md mx-auto space-y-6 border border-purple-200"
+        >
           <div>
-            <Label htmlFor="id" className="text-purple-700 font-semibold">ID</Label>
+            <Label htmlFor="id" className="text-purple-700 font-semibold">
+              ID
+            </Label>
             <Input
               id="id"
               name="id"
@@ -106,7 +105,9 @@ export default function RegisterForm() {
             />
           </div>
           <div>
-            <Label htmlFor="university" className="text-purple-700 font-semibold">University</Label>
+            <Label htmlFor="university" className="text-purple-700 font-semibold">
+              University
+            </Label>
             <Input
               id="university"
               name="university"
@@ -117,7 +118,9 @@ export default function RegisterForm() {
             />
           </div>
           <div>
-            <Label htmlFor="department" className="text-purple-700 font-semibold">Department</Label>
+            <Label htmlFor="department" className="text-purple-700 font-semibold">
+              Department
+            </Label>
             <Input
               id="department"
               name="department"
@@ -128,7 +131,9 @@ export default function RegisterForm() {
             />
           </div>
           <div>
-            <Label htmlFor="year" className="text-purple-700 font-semibold">Year</Label>
+            <Label htmlFor="year" className="text-purple-700 font-semibold">
+              Year
+            </Label>
             <Input
               id="year"
               name="year"
@@ -138,7 +143,11 @@ export default function RegisterForm() {
               className="mt-1 rounded-lg border-purple-300 focus:border-purple-500 focus:ring-purple-500"
             />
           </div>
-          <Button type="submit" disabled={loading} className="w-full bg-purple-600 hover:bg-purple-700 text-white rounded-lg py-3 font-semibold transition-colors">
+          <Button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-purple-600 hover:bg-purple-700 text-white rounded-lg py-3 font-semibold transition-colors"
+          >
             {loading ? 'Registering...' : 'Register'}
           </Button>
         </form>
