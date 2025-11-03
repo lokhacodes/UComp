@@ -4,14 +4,18 @@ import mongoose from 'mongoose'
 import { connectToDatabase } from '@/lib/mongodb/database'
 import Registration from '@/lib/mongodb/database/models/registration.model'
 import { handleError } from '@/lib/utils'
+import { CreateRegistrationParams } from '@/types'
 
-export async function createRegistration({ userId, eventId, additionalInfo }: { userId: string, eventId: string, additionalInfo?: any }) {
+export async function createRegistration({ userId, eventId, subeventId, teamName, teamMembers, additionalInfo }: CreateRegistrationParams) {
   try {
     await connectToDatabase()
 
     const newRegistration = await Registration.create({
       user: new mongoose.Types.ObjectId(userId),
       event: new mongoose.Types.ObjectId(eventId),
+      subeventId,
+      teamName,
+      teamMembers,
       additionalInfo,
     })
 

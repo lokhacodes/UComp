@@ -143,6 +143,25 @@ export type GetOrdersByUserParams = {
   page: string | number | null
 }
 
+// ====== REGISTRATION PARAMS
+export type CreateRegistrationParams = {
+  userId: string
+  eventId: string
+  subeventId?: string
+  teamName?: string
+  teamMembers?: {
+    name: string
+    phone: string
+    email: string
+  }[]
+  additionalInfo?: {
+    id?: string
+    university?: string
+    department?: string
+    year?: string
+  }
+}
+
 // ====== URL QUERY PARAMS
 export type UrlQueryParams = {
   params: string

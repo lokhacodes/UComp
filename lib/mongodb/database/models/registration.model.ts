@@ -12,6 +12,13 @@ export interface IRegistration extends Document {
     lastName: string
     email: string
   }
+  subeventId?: string
+  teamName?: string
+  teamMembers?: {
+    name: string
+    phone: string
+    email: string
+  }[]
   additionalInfo?: {
     id?: string
     university?: string
@@ -33,6 +40,26 @@ const RegistrationSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User',
   },
+  subeventId: {
+    type: String,
+  },
+  teamName: {
+    type: String,
+  },
+  teamMembers: [{
+    name: {
+      type: String,
+      required: true,
+    },
+    phone: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+  }],
   additionalInfo: {
     id: {
       type: String,
