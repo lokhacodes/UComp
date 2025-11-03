@@ -8,8 +8,9 @@ import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 export default function SuccessPage() {
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="bg-white shadow w-full">
-        <div className="max-w-7xl mx-auto px-4 flex justify-between items-center py-4">
+      {/* HEADER */}
+      <header className="bg-white shadow">
+        <div className="wrapper flex justify-between items-center py-4">
           <Link href="/" className="w-36">
             <Image
               src="/assets/images/logo.svg"
@@ -39,9 +40,11 @@ export default function SuccessPage() {
         </div>
       </header>
 
-      <main className="flex-1 bg-primary-50 bg-dotted-pattern bg-contain py-10">
-        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 gap-10 md:grid-cols-2 items-center">
-          <div className="flex flex-col justify-center gap-6">
+      {/* MAIN CONTENT */}
+      <section className="bg-primary-50 bg-dotted-pattern bg-contain py-5 md:py-10 flex-1">
+        <div className="wrapper grid grid-cols-1 gap-5 md:grid-cols-2 2xl:gap-0">
+          {/* LEFT SIDE - TEXT */}
+          <div className="flex flex-col justify-center gap-8">
             <h1 className="h1-bold text-green-600">Payment Successful!</h1>
             <p className="p-regular-20 md:p-regular-24 text-gray-700">
               Your payment has been processed successfully. Thank you for your
@@ -63,19 +66,19 @@ export default function SuccessPage() {
             </div>
           </div>
 
-          <div className="flex justify-center">
-            <Image
-              src="/assets/images/test.png"
-              alt="Payment success illustration"
-              width={600}
-              height={600}
-              className="max-h-[60vh] object-contain"
-            />
-          </div>
+          {/* RIGHT SIDE - IMAGE */}
+          <Image
+            src="/assets/images/hero.png"
+            alt="Payment success illustration"
+            width={1000}
+            height={1000}
+            className="max-h-[70vh] object-contain object-center 2xl:max-h-[50vh]"
+          />
         </div>
-      </main>
+      </section>
 
-      <footer className="bg-white shadow w-full py-4 text-center text-sm text-gray-500">
+      {/* FOOTER */}
+      <footer className="bg-white shadow py-4 text-center text-sm text-gray-500">
         &copy; {new Date().getFullYear()} UComp. All rights reserved.
       </footer>
     </div>
