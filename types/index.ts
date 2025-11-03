@@ -31,6 +31,7 @@ export type CreateEventParams = {
     price: string
     isFree: boolean
     url: string
+    subevents?: Subevent[]
   }
   path: string
 }
@@ -49,6 +50,7 @@ export type UpdateEventParams = {
     price: string
     isFree: boolean
     url: string
+    subevents?: Subevent[]
   }
   path: string
 }
@@ -78,6 +80,13 @@ export type GetRelatedEventsByCategoryParams = {
   page: number | string
 }
 
+export type Subevent = {
+  name: string
+  description: string
+  competitionType: 'individual' | 'team'
+  teamSize?: number
+}
+
 export type Event = {
   _id: string
   title: string
@@ -89,6 +98,7 @@ export type Event = {
   startDateTime: Date
   endDateTime: Date
   url: string
+  subevents?: Subevent[]
   organizer: {
     _id: string
     firstName: string

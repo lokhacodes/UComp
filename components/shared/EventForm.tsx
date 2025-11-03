@@ -1,7 +1,7 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { useForm, useFieldArray } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
@@ -32,11 +32,11 @@ type EventFormProps = {
 
 const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
   const [files, setFiles] = useState<File[]>([])
-  const initialValues = event && type === 'Update' 
-    ? { 
-      ...event, 
-      startDateTime: new Date(event.startDateTime), 
-      endDateTime: new Date(event.endDateTime) 
+  const initialValues = event && type === 'Update'
+    ? {
+      ...event,
+      startDateTime: new Date(event.startDateTime),
+      endDateTime: new Date(event.endDateTime)
     }
     : eventDefaultValues;
   const router = useRouter();
@@ -46,6 +46,11 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
   const form = useForm<z.infer<typeof eventFormSchema>>({
     resolver: zodResolver(eventFormSchema),
     defaultValues: initialValues
+  })
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "subevents"
   })
  
   async function onSubmit(values: z.infer<typeof eventFormSchema>) {
@@ -317,8 +322,99 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
             />
         </div>
 
+        {/* Subevents Section */}
+        <div className="flex flex-col gap-5">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-semibold">Subevents</h3>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => append({ name: '', description: '', competitionType: 'individual' })}
+            >
+              Add Subevent
+            </Button>
+          </div>
+          {fields.map((field, index) => (
+            <div key={field.id} className="border rounded-lg p-4 space-y-4">
+              <div className="flex justify-between items-center">
+                <h4 className="font-medium">Subevent {index + 1}</h4>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  size="sm"
+                  onClick={() => remove(index)}
+                >
+                  Remove
+                </Button>
+              </div>
+              <FormField
+                control={form.control}
+                name={`subevents.${index}.name`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Subevent Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter subevent name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name={`subevents.${index}.description`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="Enter subevent description" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name={`subevents.${index}.competitionType`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Competition Type</FormLabel>
+                    <FormControl>
+                      <select {...field} className="select-field">
+                        <option value="individual">Individual</option>
+                        <option value="team">Team</option>
+                      </select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {form.watch(`subevents.${index}.competitionType`) === 'team' && (
+                <FormField
+                  control={form.control}
+                  name={`subevents.${index}.teamSize`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Team Size</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          min="2"
+                          placeholder="Number of team members"
+                          {...field}
+                          onChange={(e) => field.onChange(parseInt(e.target.value) || undefined)}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+            </div>
+          ))}
+        </div>
 
-        <Button 
+        <Button
           type="submit"
           size="lg"
           disabled={form.formState.isSubmitting}

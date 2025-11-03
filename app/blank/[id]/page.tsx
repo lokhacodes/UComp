@@ -1,12 +1,15 @@
-import CheckoutButton from '@/components/shared/CheckoutButton';
-import Collection from '@/components/shared/CollectionU';
-import { getEventById, getRelatedEventsByCategory } from '@/lib/actions/event.actions';
-import { formatDateTime } from '@/lib/utils';
-import { SearchParamProps } from '@/types';
-import Image from 'next/image';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import CheckoutButton from "@/components/shared/CheckoutButton";
+import Collection from "@/components/shared/CollectionU";
+import {
+  getEventById,
+  getRelatedEventsByCategory,
+} from "@/lib/actions/event.actions";
+import { formatDateTime } from "@/lib/utils";
+import { SearchParamProps } from "@/types";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 const EventDetails = async (props: SearchParamProps) => {
   const { params, searchParams } = await props;
@@ -30,14 +33,21 @@ const EventDetails = async (props: SearchParamProps) => {
       <header className="bg-white shadow">
         <div className="wrapper flex justify-between items-center py-4">
           <Link href="/" className="w-36">
-            <Image src="/assets/images/logo.svg" width={100} height={25} alt="UComp logo" />
+            <Image
+              src="/assets/images/logo.svg"
+              width={100}
+              height={25}
+              alt="UComp logo"
+            />
           </Link>
+
           <Link
             href="/blank/my-registrations"
             className="font-bold text-primary-500 hover:text-primary-700 hover:ring-2 hover:ring-primary-500 hover:ring-opacity-50 transition-all duration-200"
           >
             My Registrations
           </Link>
+
           <div className="flex w-32 justify-end gap-3">
             <SignedIn>
               <UserButton />
@@ -52,25 +62,30 @@ const EventDetails = async (props: SearchParamProps) => {
       </header>
 
       {/* ================= MAIN CONTENT ================= */}
-      <main className="flex-grow">
-        <section className="flex justify-center bg-primary-50 bg-dotted-pattern bg-contain">
-          <div className="grid grid-cols-1 md:grid-cols-2 2xl:max-w-7xl">
-            <Image
-              src={event.imageUrl}
-              alt="hero image"
-              width={1000}
-              height={1000}
-              className="h-full min-h-[300px] object-cover object-center"
-            />
+      <main className="flex-grow flex flex-col">
+        <section className="flex justify-center bg-primary-50 bg-dotted-pattern bg-contain flex-grow">
+          <div className="grid grid-cols-1 md:grid-cols-2 2xl:max-w-7xl w-full">
+            {/* Event Image */}
+            <div className="h-full">
+              <Image
+                src={event.imageUrl}
+                alt="Event image"
+                width={1000}
+                height={1000}
+                className="h-full min-h-[300px] object-cover object-center"
+              />
+            </div>
 
-            <div className="flex w-full flex-col gap-8 p-5 md:p-10">
+            {/* Event Details */}
+            <div className="flex flex-col gap-8 p-5 md:p-10 overflow-auto max-h-[calc(100vh-96px)]">
+              {/* Event Title & Organizer */}
               <div className="flex flex-col gap-6">
                 <h2 className="h2-bold">{event.title}</h2>
 
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                   <div className="flex gap-3">
                     <p className="p-bold-20 rounded-full bg-green-500/10 px-5 py-2 text-green-700">
-                      {event.isFree ? 'FREE' : `$${event.price}`}
+                      {event.isFree ? "FREE" : `$${event.price}`}
                     </p>
                     <p className="p-medium-16 rounded-full bg-grey-500/10 px-4 py-2.5 text-grey-500">
                       {event.category.name}
@@ -78,15 +93,52 @@ const EventDetails = async (props: SearchParamProps) => {
                   </div>
 
                   <p className="p-medium-18 ml-2 mt-2 sm:mt-0">
-                    <span className="text-primary-500">{event.organizer?.firstName} {event.organizer?.lastName}</span>
+                    <span className="text-primary-500">
+                      {event.organizer?.firstName} {event.organizer?.lastName}
+                    </span>
                   </p>
                 </div>
               </div>
 
-              {/* Checkout Button - disable if event finished */}
+              {/* ===== Subevents Section ===== */}
+              {event.subevents && event.subevents.length > 0 && (
+                <div className="flex flex-col gap-4">
+                  <h3 className="p-bold-20 text-grey-600">Subevents</h3>
+                  <div className="grid gap-4 md:grid-cols-2">
+                    {event.subevents.map((subevent: any, index: number) => (
+                      <div
+                        key={index}
+                        className="border rounded-lg p-4 bg-white shadow-sm"
+                      >
+                        <div className="flex justify-between items-start mb-2">
+                          <h4 className="font-semibold text-lg">{subevent.name}</h4>
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              subevent.competitionType === "team"
+                                ? "bg-blue-100 text-blue-800"
+                                : "bg-green-100 text-green-800"
+                            }`}
+                          >
+                            {subevent.competitionType === "team"
+                              ? "Team"
+                              : "Individual"}
+                          </span>
+                        </div>
+                        <p className="text-grey-600 mb-3">{subevent.description}</p>
+                        {subevent.competitionType === "team" && subevent.teamSize && (
+                          <p className="text-sm text-grey-500">
+                            Team Size: {subevent.teamSize} members
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* ===== Checkout + Registration ===== */}
               <CheckoutButton event={event} />
 
-              {/* Register Button with hasEventFinished check */}
               {hasEventFinished ? (
                 <div className="mt-4 text-center p-3 bg-red-100 rounded-lg text-red-600 font-semibold">
                   Registration Closed
@@ -101,38 +153,52 @@ const EventDetails = async (props: SearchParamProps) => {
                 </div>
               )}
 
-              <div className="flex flex-col gap-5">
+              {/* ===== Date, Location, Description ===== */}
+              <div className="flex flex-col gap-5 mt-4">
                 <div className="flex gap-2 md:gap-3">
-                  <Image src="/assets/icons/calendar.svg" alt="calendar" width={32} height={32} />
-                  <div className="p-medium-16 lg:p-regular-20 flex flex-wrap items-center">
+                  <Image
+                    src="/assets/icons/calendar.svg"
+                    alt="calendar"
+                    width={32}
+                    height={32}
+                  />
+                  <div className="p-medium-16 lg:p-regular-20 flex flex-wrap items-center gap-2">
                     <p>
-                      {formatDateTime(event.startDateTime).dateOnly} - {formatDateTime(event.startDateTime).timeOnly}
+                      {formatDateTime(event.startDateTime).dateOnly} –{" "}
+                      {formatDateTime(event.startDateTime).timeOnly}
                     </p>
                     <p>
-                      {formatDateTime(event.endDateTime).dateOnly} - {formatDateTime(event.endDateTime).timeOnly}
+                      {formatDateTime(event.endDateTime).dateOnly} –{" "}
+                      {formatDateTime(event.endDateTime).timeOnly}
                     </p>
                   </div>
                 </div>
 
                 <div className="p-regular-20 flex items-center gap-3">
-                  <Image src="/assets/icons/location.svg" alt="location" width={32} height={32} />
+                  <Image
+                    src="/assets/icons/location.svg"
+                    alt="location"
+                    width={32}
+                    height={32}
+                  />
                   <p className="p-medium-16 lg:p-regular-20">{event.location}</p>
                 </div>
               </div>
 
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 mt-4 mb-8">
                 <p className="p-bold-20 text-grey-600">What You'll Learn:</p>
                 <p className="p-medium-16 lg:p-regular-18">{event.description}</p>
-                <p className="p-medium-16 lg:p-regular-18 truncate text-primary-500 underline">{event.url}</p>
+                <p className="p-medium-16 lg:p-regular-18 truncate text-primary-500 underline">
+                  {event.url}
+                </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* EVENTS with the same category */}
+        {/* ===== Related Events Section ===== */}
         <section className="wrapper my-8 flex flex-col gap-8 md:gap-12">
           <h2 className="h2-bold">Related Events</h2>
-
           <Collection
             data={relatedEvents?.data}
             emptyTitle="No Events Found"

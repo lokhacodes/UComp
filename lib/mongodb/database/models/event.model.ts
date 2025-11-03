@@ -12,9 +12,21 @@ export interface IEvent extends Document {
   price: string;
   isFree: boolean;
   url?: string;
+  subevents?: {
+    name: string;
+    description: string;
+    isTeamCompetition: boolean;
+  }[];
   category: { _id: string, name: string }
   organizer: { _id: string, firstName: string, lastName: string }
 }
+
+const SubeventSchema = new Schema({
+  name: { type: String, required: true },
+  description: { type: String, required: true },
+  competitionType: { type: String, enum: ['individual', 'team'], required: true },
+  teamSize: { type: Number, min: 2 },
+})
 
 const EventSchema = new Schema({
   title: { type: String, required: true },
@@ -27,6 +39,7 @@ const EventSchema = new Schema({
   price: { type: String },
   isFree: { type: Boolean, default: false },
   url: { type: String },
+  subevents: [SubeventSchema],
   category: { type: Schema.Types.ObjectId, ref: 'Category' },
   organizer: { type: Schema.Types.ObjectId, ref: 'User' },
 })
