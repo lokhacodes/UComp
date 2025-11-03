@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
 
         const executePaymentResponse = await executePayment(bkashConfig, paymentId);
 
-        if (executePaymentResponse.statusCode !== "0000") {
+        if (!executePaymentResponse || executePaymentResponse.statusCode !== "0000") {
             return NextResponse.redirect(`${myUrl}/cancel`, 303); // Redirect to the homepage
         }
 
