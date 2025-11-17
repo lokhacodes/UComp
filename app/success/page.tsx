@@ -48,7 +48,7 @@ export default function SuccessPage() {
             <h1 className="h1-bold text-green-600">Payment Successful!</h1>
             <p className="p-regular-20 md:p-regular-24 text-gray-700">
               Your payment has been processed successfully. Thank you for your
-              purchase and trust in UComp!
+              registration and trust in UComp!
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
