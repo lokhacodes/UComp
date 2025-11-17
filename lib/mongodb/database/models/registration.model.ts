@@ -47,11 +47,11 @@ const RegistrationSchema = new Schema({
     type: String,
   },
   teamMembers: [{
-    name: {
+    id: {
       type: String,
       required: true,
     },
-    phone: {
+    name: {
       type: String,
       required: true,
     },

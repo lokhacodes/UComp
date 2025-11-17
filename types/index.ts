@@ -150,8 +150,8 @@ export type CreateRegistrationParams = {
   subeventId?: string
   teamName?: string
   teamMembers?: {
+    id: string
     name: string
-    phone: string
     email: string
   }[]
   additionalInfo?: {

@@ -29,7 +29,7 @@ export default function RegisterForm() {
   const [event, setEvent] = useState<any>(null)
   const [selectedSubevent, setSelectedSubevent] = useState<string>('')
   const [teamName, setTeamName] = useState('')
-  const [teamMembers, setTeamMembers] = useState<{ name: string; phone: string; email: string }[]>([])
+  const [teamMembers, setTeamMembers] = useState<{ name: string; email: string }[]>([])
   const [loading, setLoading] = useState(false)
   const [eventLoading, setEventLoading] = useState(true)
 
@@ -64,7 +64,7 @@ export default function RegisterForm() {
     const selectedSubeventData = event?.subevents?.find((sub: any) => sub.name === selectedSubevent)
     const maxMembers = selectedSubeventData?.teamSize || 2
     if (teamMembers.length < maxMembers) { // -1 because the current user is also a member
-      setTeamMembers([...teamMembers, { name: '', phone: '', email: '' }])
+      setTeamMembers([...teamMembers, {name: '', email: '' }])
     }
   }
 
@@ -194,19 +194,11 @@ export default function RegisterForm() {
                   {teamMembers.map((member, index) => (
                     <div key={index} className="flex gap-2 items-end">
                       <div className="flex-1">
+                        
                         <Input
                           placeholder="Name"
                           value={member.name}
                           onChange={(e) => handleTeamMemberChange(index, 'name', e.target.value)}
-                          required
-                          className="rounded-lg border-purple-300 focus:border-purple-500 focus:ring-purple-500"
-                        />
-                      </div>
-                      <div className="flex-1">
-                        <Input
-                          placeholder="Phone"
-                          value={member.phone}
-                          onChange={(e) => handleTeamMemberChange(index, 'phone', e.target.value)}
                           required
                           className="rounded-lg border-purple-300 focus:border-purple-500 focus:ring-purple-500"
                         />
