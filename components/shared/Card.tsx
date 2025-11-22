@@ -1,6 +1,8 @@
+"use client"
+
 import { IEvent } from '@/lib/mongodb/database/models/event.model'
 import { formatDateTime } from '@/lib/utils'
-import { auth } from '@clerk/nextjs/server'
+import { useUser } from '@clerk/nextjs'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -12,11 +14,9 @@ type CardProps = {
   hidePrice?: boolean
 }
 
-const Card = async ({ event, hasOrderLink, hidePrice }: CardProps) => {
-  const { sessionClaims } = await auth();
-  const userId = sessionClaims?.userId as string;
-
-  const isEventCreator = userId === event?.organizer?._id.toString();
+const Card = ({ event, hasOrderLink, hidePrice }: CardProps) => {
+  const { isSignedIn, user } = useUser()
+  const isLoggedInUser = Boolean(isSignedIn)
 
   return (
     <div className="group relative flex min-h-[380px] w-full max-w-[400px] flex-col overflow-hidden rounded-xl bg-white shadow-md transition-all hover:shadow-lg md:min-h-[438px]">
@@ -25,9 +25,9 @@ const Card = async ({ event, hasOrderLink, hidePrice }: CardProps) => {
         style={{backgroundImage: `url(${event.imageUrl})`}}
         className="flex-center flex-grow bg-gray-50 bg-cover bg-center text-grey-500"
       />
-      {/* IS EVENT CREATOR ... */}
+      {/* SHOW BUTTONS FOR LOGGED IN USERS */}
 
-      {isEventCreator && !hidePrice && (
+      {isLoggedInUser && !hidePrice && (
         <div className="absolute right-2 top-2 flex flex-col gap-4 rounded-xl bg-white p-3 shadow-sm transition-all">
           <Link href={`/events/${event._id}/update`}>
             <Image src="/assets/icons/edit.svg" alt="edit" width={20} height={20} />
