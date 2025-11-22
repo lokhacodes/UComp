@@ -75,27 +75,26 @@ export default function OrdersPage() {
     return (
       <div className="min-h-screen flex flex-col bg-gray-50">
         <main className="flex-grow container mx-auto p-6">
-         <div className="flex flex-col items-center justify-center text-center mb-6">
-  <h1 className="text-3xl font-bold mb-4 text-indigo-700">Event Registrations</h1>
+          <div className="flex flex-col items-center justify-center text-center mb-6">
+            <h1 className="text-3xl font-bold mb-4 text-indigo-700">Event Registrations</h1>
 
-  {event?.imageUrl && (
-    <Image
-      src={event.imageUrl}
-      alt={event.title}
-      width={150}
-      height={100}
-      className="object-cover rounded-lg mb-4"
-    />
-  )}
+            {event?.imageUrl && (
+              <Image
+                src={event.imageUrl}
+                alt={event.title}
+                width={150}
+                height={100}
+                className="object-cover rounded-lg mb-4"
+              />
+            )}
 
-  <p className="text-indigo-900 font-bold text-xl">
-    Event Name: {event?.title}
-  </p>
-</div>
+            <p className="text-indigo-900 font-bold text-xl">
+              Event Name: {event?.title}
+            </p>
+          </div>
 
-<div className="bg-white shadow-md rounded-lg p-4 mb-8 border border-indigo-200">
-     <p className="text-indigo-800 mt-1">Total Participants: {registrations.length}</p> 
-            
+          <div className="bg-white shadow-md rounded-lg p-4 mb-8 border border-indigo-200">
+            <p className="text-indigo-800 mt-1">Total Participants: {registrations.length}</p> 
 
             {subevents.length > 0 ? (
               subevents.map((subevent: any) => {
@@ -137,19 +136,27 @@ export default function OrdersPage() {
                         </table>
                       </div>
                     ) : (
-                      <div>
-                        {subeventRegs.map((reg: any) => (
-                          <div key={reg._id} className="bg-indigo-50 p-4 rounded-lg mb-4 border border-indigo-200">
-                            <h4 className="font-semibold text-indigo-900">{reg.teamName || 'Unnamed Team'}</h4>
-                            <p className="text-indigo-700 mb-2">Team Members:</p>
-                            <ul className="list-disc list-inside text-indigo-800">
-                              {reg.teamMembers?.map((member: any, idx: number) => (
-                                <li key={idx}>{member.name} - {member.email}</li>
-                              )) || <li>No members listed</li>}
-                            </ul>
-                            <p className="text-indigo-700 mt-2">Registered At: {new Date(reg.createdAt).toLocaleString()}</p>
-                          </div>
-                        ))}
+                      <div className="overflow-x-auto">
+                        <table className="min-w-full table-auto border-collapse border border-indigo-200">
+                          <thead>
+                            <tr className="bg-indigo-100 text-indigo-900">
+                              <th className="px-3 py-2 border border-indigo-200">Team Name</th>
+                              <th className="px-3 py-2 border border-indigo-200">Members</th>
+                              <th className="px-3 py-2 border border-indigo-200">Registered At</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {subeventRegs.map((reg: any) => (
+                              <tr key={reg._id} className="hover:bg-indigo-50">
+                                <td className="px-3 py-2 border border-indigo-200">{reg.teamName || 'Unnamed Team'}</td>
+                                <td className="px-3 py-2 border border-indigo-200">
+                                  {reg.teamMembers?.map((member: any) => `${member.name} (${member.email})`).join(', ') || 'No members listed'}
+                                </td>
+                                <td className="px-3 py-2 border border-indigo-200">{new Date(reg.createdAt).toLocaleString()}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
                       </div>
                     )}
                   </div>
@@ -266,19 +273,27 @@ export default function OrdersPage() {
                           </table>
                         </div>
                       ) : (
-                        <div>
-                          {subeventRegs.map((reg: any) => (
-                            <div key={reg._id} className="bg-indigo-50 p-4 rounded-lg mb-4 border border-indigo-200">
-                              <h4 className="font-semibold text-indigo-900">{reg.teamName || 'Unnamed Team'}</h4>
-                              <p className="text-indigo-700 mb-2">Team Members:</p>
-                              <ul className="list-disc list-inside text-indigo-800">
-                                {reg.teamMembers?.map((member: any, idx: number) => (
-                                  <li key={idx}>{member.name} - {member.email}</li>
-                                )) || <li>No members listed</li>}
-                              </ul>
-                              <p className="text-indigo-700 mt-2">Registered At: {new Date(reg.createdAt).toLocaleString()}</p>
-                            </div>
-                          ))}
+                        <div className="overflow-x-auto">
+                          <table className="min-w-full table-auto border-collapse border border-indigo-200">
+                            <thead>
+                              <tr className="bg-indigo-100 text-indigo-900">
+                                <th className="px-3 py-2 border border-indigo-200">Team Name</th>
+                                <th className="px-3 py-2 border border-indigo-200">Members</th>
+                                <th className="px-3 py-2 border border-indigo-200">Registered At</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {subeventRegs.map((reg: any) => (
+                                <tr key={reg._id} className="hover:bg-indigo-50">
+                                  <td className="px-3 py-2 border border-indigo-200">{reg.teamName || 'Unnamed Team'}</td>
+                                  <td className="px-3 py-2 border border-indigo-200">
+                                    {reg.teamMembers?.map((member: any) => `${member.name} (${member.email})`).join(', ') || 'No members listed'}
+                                  </td>
+                                  <td className="px-3 py-2 border border-indigo-200">{new Date(reg.createdAt).toLocaleString()}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
                         </div>
                       )}
                     </div>
