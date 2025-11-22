@@ -62,20 +62,18 @@ export async function getEventById(eventId: string) {
 }
 
 // UPDATE
-export async function updateEvent({ userId, event, path }: UpdateEventParams) {
+export async function updateEvent({ event, path }: UpdateEventParams) {
   try {
     await connectToDatabase()
-
-    const eventToUpdate = await Event.findById(event._id).populate('organizer')
-    if (!eventToUpdate || eventToUpdate.organizer.toHexString() !== userId) {
-      throw new Error('Unauthorized or event not found')
-    }
 
     const updatedEvent = await Event.findByIdAndUpdate(
       event._id,
       { ...event, category: event.categoryId },
       { new: true }
     )
+
+    if (!updatedEvent) throw new Error('Event not found')
+
     revalidatePath(path)
 
     return JSON.parse(JSON.stringify(updatedEvent))
@@ -83,6 +81,8 @@ export async function updateEvent({ userId, event, path }: UpdateEventParams) {
     handleError(error)
   }
 }
+
+
 
 // DELETE
 export async function deleteEvent({ eventId, path }: DeleteEventParams) {
