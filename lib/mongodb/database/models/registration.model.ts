@@ -47,10 +47,6 @@ const RegistrationSchema = new Schema({
     type: String,
   },
   teamMembers: [{
-    id: {
-      type: String,
-      required: true,
-    },
     name: {
       type: String,
       required: true,

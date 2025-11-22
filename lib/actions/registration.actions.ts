@@ -31,7 +31,7 @@ export async function getRegistrationsByEvent(eventId: string) {
 
     const registrations = await Registration.find({ event: eventId })
       .populate('user', '_id firstName lastName email')
-      .populate('event', '_id title')
+      .populate('event', '_id title imageUrl subevents')
 
     return JSON.parse(JSON.stringify(registrations))
   } catch (error) {
@@ -47,7 +47,7 @@ export async function getAllRegistrations(page = 1, limit = 10) {
 
     const registrations = await Registration.find()
       .populate('user', '_id firstName lastName email')
-      .populate('event', '_id title imageUrl')
+      .populate('event', '_id title imageUrl subevents')
       .skip(skip)
       .limit(limit)
       .sort({ createdAt: -1 })
