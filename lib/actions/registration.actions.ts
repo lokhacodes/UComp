@@ -6,13 +6,30 @@ import Registration from '@/lib/mongodb/database/models/registration.model'
 import { handleError } from '@/lib/utils'
 import { CreateRegistrationParams } from '@/types'
 
+import Event from '@/lib/mongodb/database/models/event.model'
+
 export async function createRegistration({ userId, eventId, subeventId, teamName, teamMembers, additionalInfo }: CreateRegistrationParams) {
   try {
     await connectToDatabase()
 
+    // Fetch event details to save snapshot in registration
+    const event = await Event.findById(eventId)
+
+    if (!event) {
+      throw new Error('Event not found for registration')
+    }
+
     const newRegistration = await Registration.create({
       user: new mongoose.Types.ObjectId(userId),
       event: new mongoose.Types.ObjectId(eventId),
+      eventTitle: event.title,
+      eventImageUrl: event.imageUrl,
+      eventDescription: event.description,
+      eventLocation: event.location,
+      eventStartDateTime: event.startDateTime,
+      eventEndDateTime: event.endDateTime,
+      eventPrice: event.price,
+      eventIsFree: event.isFree,
       subeventId,
       teamName,
       teamMembers,

@@ -36,6 +36,31 @@ const RegistrationSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Event',
   },
+  eventTitle: {
+    type: String,
+    required: true,
+  },
+  eventImageUrl: {
+    type: String,
+  },
+  eventDescription: {
+    type: String,
+  },
+  eventLocation: {
+    type: String,
+  },
+  eventStartDateTime: {
+    type: Date,
+  },
+  eventEndDateTime: {
+    type: Date,
+  },
+  eventPrice: {
+    type: String,
+  },
+  eventIsFree: {
+    type: Boolean,
+  },
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
