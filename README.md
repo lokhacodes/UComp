@@ -71,6 +71,12 @@ talenthunt/
 └── constants/             # Application constants
 ```
 
+## Outputs
+![alt text](image.png)
+
+
+
+
 ## Database Models
 
 ### Event Model
